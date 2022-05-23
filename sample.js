@@ -14,22 +14,29 @@ import clipboard from 'clipboardy';
 // TODO
 // 想定していない構成のテキストをクリップボードから受け取った場合のエラーチェック
 //   => split結果の検証方法？
-const msgs = clipboard.readSync()
+const textFromClipboard = clipboard.readSync()
+console.log(`text from clipboard =>
+${textFromClipboard}`) // TODO よみづらい
+const msgs = textFromClipboard
            .split('\r\n')
            .map(e => {
-              //const [id, msg] = e.split('\t');
               const columns = e.split('\t');
               if(columns.length == 2) {
                 const id = columns[0]
                 const msg = columns[1]
-                return {id, msg}
+                if(id && msg) {
+                  return {id, msg}
+                } else {
+                  return null
+                }
               } else {
-                return undefined
+                return null
               }
 });
 
-if(msgs.some(e => !e)) { // falsy check
+if(msgs.some(e => e === null)) {
   console.log(`parse failed`)
 } else {
-  console.log(`${JSON.stringify(msgs)}`)
+  console.log(`json =>
+${JSON.stringify(msgs)}`)
 }
