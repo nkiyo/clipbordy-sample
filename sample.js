@@ -38,20 +38,19 @@ const msgs = textFromClipboard
 
 if(msgs.some(e => e === null)) {
   console.log(`parse failed`)
+  process.exit(1)
 } else {
   //console.log(`json =>
 //${JSON.stringify(msgs)}`)
 }
 
+// クリップボードの内容をオブジェクト化する
 const msgJson = {
-  MM: "xx",
-  YY: "xx",
-  msgs: [],
-  check: null,
-  jirei: null
+  createdAt: new Date().toLocaleDateString(),
+  msgs: undefined,
+  check: undefined,
+  jirei: undefined
 }
-msgJson.MM = "06"
-msgJson.YY = "07"
 msgJson.msgs = msgs.filter(e => parseInt(e.id)) // idが整数を意味する文字列の場合
 msgJson.check = get(msgs.find(e => !parseInt(e.id)), "msg") // idが整数以外を意味する文字列の場合
 console.log(JSON.stringify(msgJson))
