@@ -3,6 +3,7 @@
 // split関数の失敗チェック => https://stackoverflow.com/a/20578787
 import clipboard from 'clipboardy';
 import { get } from 'lodash-es';
+import mustache from 'mustache'
 
 // クリップボードを読んでJSON化する
 // 以下、動作サンプル
@@ -55,3 +56,14 @@ msgJson.msgs = msgs.filter(e => parseInt(e.id)) // idが整数を意味する文
 msgJson.check = get(msgs.find(e => !parseInt(e.id)), "msg") // idが整数以外を意味する文字列の場合
 console.log(JSON.stringify(msgJson))
 
+// mustache でJSONをテキスト化
+// TODO templateを外部ファイルから読み込む
+const template = `
+ hoge {{createdAt}}
+ hoge {{check}}
+ {{#msgs}}
+ {{msg}}
+ {{/msgs}}
+`
+const output = mustache.render(template, msgJson)
+console.log(output)
